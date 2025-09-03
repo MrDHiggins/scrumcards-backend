@@ -33,3 +33,22 @@ func (s *SessionService) CreateSession(hostId string, ticket string) (*models.Se
 func (s *SessionService) GetSession(id string) (*models.Session, error) {
 	return s.store.Get(id)
 }
+
+func (s *SessionService) AddParticipant(sessionID, name string) (*models.Participant, error) {
+	session, err := s.GetSession(sessionID)
+	if err != nil {
+		return nil, err
+	}
+
+	participant := &models.Participant{
+		ID:   uuid.NewString(),
+		Name: name,
+	}
+
+	if session.Participants == nil {
+		session.Participants = make(map[string]*models.Participant)
+	}
+	session.Participants[participant.ID] = participant
+
+	return participant, nil
+}
