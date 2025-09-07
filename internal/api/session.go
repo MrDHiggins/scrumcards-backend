@@ -20,6 +20,7 @@ func (h *SessionHandler) RegisterRoutes(r chi.Router) {
 	r.Post("/sessions", h.CreateSession)
 	r.Get("/sessions/{id}", h.GetSession)
 	r.Post("/sessions/{id}/participants", h.JoinSession)
+	r.Post("/sessions/{id}/votes", h.CastVote)
 }
 
 func (h *SessionHandler) CreateSession(w http.ResponseWriter, r *http.Request) {
@@ -74,4 +75,27 @@ func (h *SessionHandler) JoinSession(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(participant)
+}
+
+func (h *SessionHandler) CastVote(w http.ResponseWriter, r *http.Request) {
+	sessionID := chi.URLParam(r, "id")
+
+	var req struct {
+		ParticipantID string `json:"participant_id"`
+		Value         string `json:"value"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.ParticipantID == "" || req.Value == "" {
+		http.Error(w, "invalid participant vote request body", http.StatusBadRequest)
+		return
+	}
+
+	vote, err := h.service.CastVote(sessionID, req.ParticipantID, req.Value)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(vote)
 }
