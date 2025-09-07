@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/MrDHiggins/planning-poker-backend/internal/models"
@@ -53,4 +54,28 @@ func (s *SessionService) AddParticipant(sessionID, name string) (*models.Partici
 	session.Participants[participant.ID] = participant
 
 	return participant, nil
+}
+
+func (s *SessionService) CastVote(sessionID, participantID, value string) (*models.Vote, error) {
+	session, err := s.GetSession(sessionID)
+	if err != nil {
+		return nil, err
+	}
+
+	if _, ok := session.Participants[participantID]; !ok {
+		return nil, fmt.Errorf("participant %s not found in session", participantID)
+	}
+
+	vote := &models.Vote{
+		ParticipantID: participantID,
+		Value:         value,
+	}
+
+	if session.Votes == nil {
+		session.Votes = make(map[string]*models.Vote)
+	}
+
+	session.Votes[participantID] = vote
+
+	return vote, nil
 }
