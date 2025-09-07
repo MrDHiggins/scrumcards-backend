@@ -18,10 +18,12 @@ func NewSessionService(store store.SessionStore) *SessionService {
 
 func (s *SessionService) CreateSession(hostId string, ticket string) (*models.Session, error) {
 	session := &models.Session{
-		ID:        uuid.NewString(),
-		CreatedAt: time.Now(),
-		HostId:    hostId,
-		Ticket:    ticket,
+		ID:           uuid.NewString(),
+		CreatedAt:    time.Now(),
+		HostId:       hostId,
+		Ticket:       ticket,
+		Participants: make(map[string]*models.Participant),
+		Votes:        make(map[string]*models.Vote),
 	}
 
 	if err := s.store.Create(session); err != nil {
