@@ -25,6 +25,7 @@ func (s *SessionService) CreateSession(hostId string, ticket string) (*models.Se
 		Ticket:       ticket,
 		Participants: make(map[string]*models.Participant),
 		Votes:        make(map[string]*models.Vote),
+		Revealed:     false,
 	}
 
 	if err := s.store.Create(session); err != nil {
@@ -78,4 +79,16 @@ func (s *SessionService) CastVote(sessionID, participantID, value string) (*mode
 	session.Votes[participantID] = vote
 
 	return vote, nil
+}
+
+func (s *SessionService) RevealVotes(sessionID string) (*models.Session, error) {
+	session, err := s.GetSession(sessionID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	session.Revealed = true
+
+	return session, nil
 }

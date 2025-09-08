@@ -9,6 +9,7 @@ type Session struct {
 	Ticket       string                  `json:"ticket,omitempty"`
 	Participants map[string]*Participant `json:"participants,omitempty"`
 	Votes        map[string]*Vote        `json:"votes,omitempty"`
+	Revealed     bool                    `json:"revealed"`
 }
 
 type SessionResponse struct {
@@ -18,4 +19,5 @@ type SessionResponse struct {
 	Ticket       string         `json:"ticket,omitempty"`
 	Participants []*Participant `json:"participants,omitempty"`
 	Votes        []*Vote        `json:"votes,omitempty"`
+	Revealed     bool           `json:"revealed"`
 }

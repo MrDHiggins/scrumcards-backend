@@ -6,6 +6,7 @@ import (
 
 	"github.com/MrDHiggins/planning-poker-backend/internal/models"
 	"github.com/MrDHiggins/planning-poker-backend/internal/service"
+	"github.com/MrDHiggins/planning-poker-backend/internal/utils"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -23,6 +24,7 @@ func (h *SessionHandler) RegisterRoutes(r chi.Router) {
 	r.Get("/sessions/{id}", h.GetSession)
 	r.Post("/sessions/{id}/participants", h.JoinSession)
 	r.Post("/sessions/{id}/votes", h.CastVote)
+	r.Post("/sessions/{id}/reveal", h.RevealVotes)
 }
 
 func (h *SessionHandler) CreateSession(w http.ResponseWriter, r *http.Request) {
@@ -98,8 +100,9 @@ func (h *SessionHandler) CastVote(w http.ResponseWriter, r *http.Request) {
 	sessionID := chi.URLParam(r, "id")
 
 	var req struct {
-		ParticipantID string `json:"participant_id"`
-		Value         string `json:"value"`
+		ParticipantID   string `json:"participant_id"`
+		ParticipantName string `json:"participant_name"`
+		Value           string `json:"value"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.ParticipantID == "" || req.Value == "" {
@@ -115,4 +118,48 @@ func (h *SessionHandler) CastVote(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(vote)
+}
+
+func (h *SessionHandler) RevealVotes(w http.ResponseWriter, r *http.Request) {
+	sessionID := chi.URLParam(r, "id")
+	session, err := h.service.RevealVotes(sessionID)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	resp := models.SessionResponse{
+		ID:        session.ID,
+		CreatedAt: session.CreatedAt,
+		HostID:    session.HostId,
+		Ticket:    session.Ticket,
+		Revealed:  session.Revealed,
+	}
+
+	for _, p := range session.Participants {
+		resp.Participants = append(resp.Participants, p)
+	}
+
+	// May need to create a util for the below when
+	// once the websocket has been implemented.
+	var enrichedVotes []models.VoteResponse
+	for _, v := range session.Votes {
+		if participant, ok := session.Participants[v.ParticipantID]; ok {
+			enrichedVotes = append(enrichedVotes, models.VoteResponse{
+				ParticipantID:   v.ParticipantID,
+				ParticipantName: participant.Name,
+				Value:           v.Value,
+			})
+		}
+	}
+
+	respData := map[string]any{
+		"session":     resp,
+		"votes":       enrichedVotes,
+		"VoteAverage": utils.CalculateVoteAverage(session.Votes),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(respData)
 }
