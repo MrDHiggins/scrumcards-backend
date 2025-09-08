@@ -1,1 +1,1 @@
-# planning-poker-backend
+# scrumcards-backend
