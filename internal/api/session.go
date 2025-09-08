@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/MrDHiggins/planning-poker-backend/internal/models"
 	"github.com/MrDHiggins/planning-poker-backend/internal/service"
+
 	"github.com/go-chi/chi/v5"
 )
 
@@ -44,15 +46,30 @@ func (h *SessionHandler) CreateSession(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *SessionHandler) GetSession(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
-	session, err := h.service.GetSession(id)
+	sessionID := chi.URLParam(r, "id")
+	session, err := h.service.GetSession(sessionID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 
+	resp := models.SessionResponse{
+		ID:        session.ID,
+		CreatedAt: session.CreatedAt,
+		HostID:    session.HostId,
+		Ticket:    session.Ticket,
+	}
+
+	for _, p := range session.Participants {
+		resp.Participants = append(resp.Participants, p)
+	}
+
+	for _, v := range session.Votes {
+		resp.Votes = append(resp.Votes, v)
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(session)
+	json.NewEncoder(w).Encode(resp)
 }
 
 func (h *SessionHandler) JoinSession(w http.ResponseWriter, r *http.Request) {
