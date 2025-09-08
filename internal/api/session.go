@@ -100,9 +100,8 @@ func (h *SessionHandler) CastVote(w http.ResponseWriter, r *http.Request) {
 	sessionID := chi.URLParam(r, "id")
 
 	var req struct {
-		ParticipantID   string `json:"participant_id"`
-		ParticipantName string `json:"participant_name"`
-		Value           string `json:"value"`
+		ParticipantID string `json:"participant_id"`
+		Value         string `json:"value"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.ParticipantID == "" || req.Value == "" {
