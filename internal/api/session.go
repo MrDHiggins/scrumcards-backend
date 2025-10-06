@@ -2,7 +2,9 @@ package api
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
+	"time"
 
 	"github.com/MrDHiggins/planning-poker-backend/internal/models"
 	"github.com/MrDHiggins/planning-poker-backend/internal/service"
@@ -43,7 +45,10 @@ func (h *SessionHandler) CreateSession(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("[SESSION CREATED] ID=%s | HostID=%s | Ticket=%s | CreatedAt=%s\n",
+		session.ID, session.HostId, session.Ticket, session.CreatedAt.Format(time.RFC3339))
 	w.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(w).Encode(session)
 }
 
