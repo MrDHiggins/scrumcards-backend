@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/MrDHiggins/planning-poker-backend/internal/models"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/models"
 )
 
 func TestSessionManagementStore(t *testing.T) {

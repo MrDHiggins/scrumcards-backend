@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/MrDHiggins/planning-poker-backend/internal/service"
-	"github.com/MrDHiggins/planning-poker-backend/internal/store/memory"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/service"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/store/memory"
 
 	"testing"
 

@@ -4,7 +4,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/MrDHiggins/planning-poker-backend/internal/models"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/models"
 )
 
 func CalculateVoteAverage(votes map[string]*models.Vote) float64 {

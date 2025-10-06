@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/MrDHiggins/planning-poker-backend/internal/models"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/models"
 )
 
 type SessionMemoryStore struct {

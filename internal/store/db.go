@@ -1,6 +1,6 @@
 package store
 
-import "github.com/MrDHiggins/planning-poker-backend/internal/models"
+import "github.com/MrDHiggins/scrumdcards-backend/internal/models"
 
 // SessionStore defines the storage operations for sessions
 type SessionStore interface {
