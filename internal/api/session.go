@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/MrDHiggins/planning-poker-backend/internal/models"
-	"github.com/MrDHiggins/planning-poker-backend/internal/service"
-	"github.com/MrDHiggins/planning-poker-backend/internal/utils"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/models"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/service"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/utils"
 
 	"github.com/go-chi/chi/v5"
 )

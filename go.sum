@@ -1,3 +1,5 @@
+github.com/MrDHiggins/scrumdcards-backend v0.0.0-20251006002226-439ed762e584 h1:lWy5j34c5TxErTDBCbwKScWQGDohf9eXnanGh6z3J/g=
+github.com/MrDHiggins/scrumdcards-backend v0.0.0-20251006002226-439ed762e584/go.mod h1:C/mYI1U7nQbl3siCcKwUukjDgPgnwkgCQ0zHINH8/qg=
 github.com/go-chi/chi/v5 v5.2.2 h1:CMwsvRVTbXVytCk1Wd72Zy1LAsAh9GxMmSNWLHCG618=
 github.com/go-chi/chi/v5 v5.2.2/go.mod h1:L2yAIGWB3H+phAw1NxKwWM+7eUH/lU8pOMm5hHcoops=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=

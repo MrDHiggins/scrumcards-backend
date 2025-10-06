@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/MrDHiggins/planning-poker-backend/internal/models"
-	"github.com/MrDHiggins/planning-poker-backend/internal/store"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/models"
+	"github.com/MrDHiggins/scrumdcards-backend/internal/store"
 	"github.com/google/uuid"
 )
 
